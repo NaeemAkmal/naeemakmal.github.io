@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hafiz Naeem Akmal — Cybersecurity Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: #00ff88;
+  --green-dim: #00aa55;
+  --green-dark: #003322;
+  --red: #ff2244;
+  --blue: #00aaff;
+  --purple: #aa44ff;
+  --bg: #0a0e0a;
+  --bg2: #0d1117;
+  --border: #1a2e1a;
+  --text: #c9d1d9;
+  --text-dim: #6e7681;
+  --card-bg: rgba(0,20,10,0.85);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 16px;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ── MATRIX CANVAS ── */
+#matrix-canvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  opacity: 0.18;
+  pointer-events: none;
+}
+
+/* ── HEX GRID BACKGROUND ── */
+.hex-bg {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  background-image:
+    radial-gradient(circle at 20% 50%, rgba(0,255,136,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(0,170,255,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 50% 80%, rgba(170,68,255,0.03) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* ── SCAN LINE ── */
+.scanline {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 3px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  z-index: 1;
+  animation: scan 6s linear infinite;
+  opacity: 0.4;
+}
+@keyframes scan { from { top: 0; } to { top: 100vh; } }
+
+/* ── LAYOUT ── */
+.container {
+  position: relative;
+  z-index: 2;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px 24px 60px;
+}
+
+/* ── HEADER ── */
+.header {
+  border: 1px solid var(--green-dim);
+  border-radius: 4px;
+  padding: 36px 40px;
+  margin-bottom: 28px;
+  background: var(--card-bg);
+  backdrop-filter: blur(8px);
+  position: relative;
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: -1px; left: 0;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--green), transparent);
+  animation: shimmer 3s ease-in-out infinite;
+}
+@keyframes shimmer { 0%,100% { opacity:0.4; } 50% { opacity:1; } }
+
+.header-inner { display: flex; align-items: center; gap: 28px; }
+
+.avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+.avatar {
+  width: 90px; height: 90px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--green-dark), #001a0a);
+  border: 2px solid var(--green-dim);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 26px; font-weight: 900;
+  color: var(--green);
+  position: relative;
+}
+.avatar-ring {
+  position: absolute;
+  top: -6px; left: -6px;
+  width: 102px; height: 102px;
+  border-radius: 50%;
+  border: 1px dashed var(--green-dim);
+  animation: rotate 8s linear infinite;
+}
+@keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+.header-name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 28px;
+  font-weight: 900;
+  color: var(--green);
+  letter-spacing: 2px;
+  text-shadow: 0 0 20px rgba(0,255,136,0.4);
+}
+.header-handle {
+  color: var(--text-dim);
+  font-size: 14px;
+  font-family: 'Share Tech Mono', monospace;
+  margin-top: 4px;
+}
+.header-bio {
+  margin-top: 10px;
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.6;
+}
+.header-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.tag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 2px;
+  border: 1px solid;
+}
+.tag.green { border-color: var(--green-dim); color: var(--green); background: rgba(0,255,136,0.06); }
+.tag.blue { border-color: #1f6feb; color: var(--blue); background: rgba(0,170,255,0.06); }
+.tag.red { border-color: #da3633; color: var(--red); background: rgba(255,34,68,0.06); }
+.tag.purple { border-color: #6e40c9; color: var(--purple); background: rgba(170,68,255,0.06); }
+
+/* ── SECTION ── */
+.section {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 24px 28px;
+  margin-bottom: 20px;
+  backdrop-filter: blur(6px);
+  position: relative;
+}
+.section-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--green-dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--border), transparent);
+}
+
+/* ── TERMINAL WHOAMI ── */
+.terminal {
+  background: #010a04;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 20px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+  line-height: 2;
+}
+.terminal .prompt { color: var(--green); }
+.terminal .cmd { color: var(--text); }
+.terminal .key { color: var(--blue); }
+.terminal .val { color: var(--text); }
+.terminal .highlight { color: var(--green); }
+.terminal .comment { color: var(--text-dim); }
+.cursor {
+  display: inline-block;
+  width: 8px; height: 14px;
+  background: var(--green);
+  animation: blink 1s step-end infinite;
+  vertical-align: bottom;
+  margin-left: 2px;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+/* ── SKILLS GRID ── */
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+}
+.skill-card {
+  background: rgba(0,255,136,0.03);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 10px 12px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+  cursor: default;
+}
+.skill-card:hover {
+  border-color: var(--green-dim);
+  color: var(--green);
+  background: rgba(0,255,136,0.07);
+}
+.skill-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.dot-green { background: var(--green); box-shadow: 0 0 6px var(--green); }
+.dot-blue { background: var(--blue); box-shadow: 0 0 6px var(--blue); }
+.dot-red { background: var(--red); box-shadow: 0 0 6px var(--red); }
+.dot-purple { background: var(--purple); box-shadow: 0 0 6px var(--purple); }
+
+/* ── PROJECT TABLE ── */
+.proj-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  font-family: 'Share Tech Mono', monospace;
+}
+.proj-table th {
+  color: var(--text-dim);
+  font-size: 11px;
+  letter-spacing: 1px;
+  text-align: left;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--border);
+}
+.proj-table td {
+  padding: 10px 10px;
+  border-bottom: 1px solid rgba(26,46,26,0.5);
+  vertical-align: top;
+}
+.proj-table tr:last-child td { border-bottom: none; }
+.proj-table tr:hover td { background: rgba(0,255,136,0.03); }
+.proj-name { color: var(--blue); font-size: 12px; }
+.proj-desc { color: var(--text-dim); font-size: 11px; margin-top: 3px; }
+.proj-stack { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 5px; }
+.proj-tag {
+  font-size: 10px;
+  padding: 1px 7px;
+  border-radius: 2px;
+  background: rgba(0,170,255,0.08);
+  border: 1px solid rgba(0,170,255,0.2);
+  color: var(--blue);
+}
+.proj-icon { font-size: 16px; }
+
+/* ── ROADMAP ── */
+.roadmap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.roadmap-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 13px;
+}
+.roadmap-icon { flex-shrink: 0; font-size: 16px; margin-top: 1px; }
+.roadmap-label { color: var(--text-dim); font-size: 11px; margin-bottom: 2px; }
+.roadmap-val { color: var(--text); }
+.roadmap-val.done { color: var(--green); }
+.roadmap-val.active { color: var(--blue); }
+.roadmap-val.future { color: var(--purple); }
+
+/* ── CONNECT ── */
+.connect-links {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.connect-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+  text-decoration: none;
+  background: rgba(0,255,136,0.03);
+  transition: all 0.2s;
+}
+.connect-btn:hover { border-color: var(--green-dim); color: var(--green); }
+.connect-icon { font-size: 14px; }
+
+/* ══════════════════════════════════════
+   CYBER HACKING GAME
+══════════════════════════════════════ */
+.game-wrap {
+  background: #010a04;
+  border: 1px solid var(--green-dim);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.game-titlebar {
+  background: rgba(0,255,136,0.07);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 16px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 12px;
+  color: var(--green-dim);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.game-dots { display: flex; gap: 6px; }
+.game-dot { width: 10px; height: 10px; border-radius: 50%; }
+.game-screen {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 0;
+  min-height: 380px;
+}
+.game-main {
+  padding: 20px;
+  border-right: 1px solid var(--border);
+  font-family: 'Share Tech Mono', monospace;
+}
+.game-sidebar {
+  padding: 16px;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+}
+
+/* Network map */
+.net-map {
+  position: relative;
+  height: 220px;
+  margin-bottom: 16px;
+}
+.net-map svg { width: 100%; height: 100%; }
+
+/* Node styles */
+.node-circle {
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.node-label {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 9px;
+  fill: #6e7681;
+  pointer-events: none;
+}
+.node-sublabel {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 8px;
+  fill: #444;
+  pointer-events: none;
+}
+
+/* Game log */
+.game-log {
+  height: 90px;
+  overflow-y: auto;
+  background: rgba(0,255,136,0.02);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 8px 10px;
+  font-size: 11px;
+  line-height: 1.8;
+  color: var(--text-dim);
+}
+.game-log::-webkit-scrollbar { width: 4px; }
+.game-log::-webkit-scrollbar-track { background: transparent; }
+.game-log::-webkit-scrollbar-thumb { background: var(--border); }
+.log-line.green { color: var(--green); }
+.log-line.red { color: var(--red); }
+.log-line.blue { color: var(--blue); }
+.log-line.yellow { color: #ffcc00; }
+
+/* Sidebar stats */
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(26,46,26,0.4);
+  font-size: 11px;
+}
+.stat-row:last-child { border-bottom: none; }
+.stat-key { color: var(--text-dim); }
+.stat-val { color: var(--green); font-weight: 600; }
+.stat-val.red { color: var(--red); }
+.stat-val.blue { color: var(--blue); }
+
+.progress-bar {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  margin: 3px 0 8px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+.fill-green { background: var(--green); box-shadow: 0 0 8px var(--green); }
+.fill-red { background: var(--red); }
+.fill-blue { background: var(--blue); }
+
+/* Action buttons */
+.game-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
+}
+.game-btn {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: rgba(0,255,136,0.04);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+}
+.game-btn:hover:not(:disabled) {
+  border-color: var(--green-dim);
+  color: var(--green);
+  background: rgba(0,255,136,0.1);
+}
+.game-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+.game-btn.active { border-color: var(--green); color: var(--green); }
+.game-btn.danger { border-color: #da3633; color: var(--red); }
+.game-btn.danger:hover:not(:disabled) { background: rgba(255,34,68,0.1); }
+
+.game-status-bar {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  padding: 8px 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+}
+.phase-label {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 2px;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+/* Mini terminal in sidebar */
+.mini-term {
+  background: #000;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 6px 8px;
+  font-size: 10px;
+  line-height: 1.7;
+  margin-top: 10px;
+  min-height: 60px;
+  color: var(--green);
+}
+
+/* Selected target highlight */
+.selected-node { filter: drop-shadow(0 0 6px var(--green)); }
+
+/* Pwned overlay */
+.pwned-tag {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 8px;
+  fill: var(--green);
+  animation: blink 1s step-end infinite;
+}
+
+/* ── FOOTER ── */
+.footer {
+  text-align: center;
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.footer-line { color: var(--green); font-size: 13px; margin-bottom: 6px; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 640px) {
+  .header-inner { flex-direction: column; text-align: center; }
+  .header-tags { justify-content: center; }
+  .game-screen { grid-template-columns: 1fr; }
+  .game-sidebar { border-top: 1px solid var(--border); }
+}
+</style>
+</head>
+<body>
+
+<!-- Matrix rain canvas -->
+<canvas id="matrix-canvas"></canvas>
+<div class="hex-bg"></div>
+<div class="scanline"></div>
+
+<div class="container">
+
+  <!-- ── HEADER ── -->
+  <div class="header">
+    <div class="header-inner">
+      <div class="avatar-wrap">
+        <div class="avatar">NA</div>
+        <div class="avatar-ring"></div>
+      </div>
+      <div>
+        <div class="header-name">HAFIZ NAEEM AKMAL</div>
+        <div class="header-handle">@NaeemAkmal · he/him · Lahore, PK 🇵🇰</div>
+        <div class="header-bio">
+          Offensive Security · Malware Analyst · SOC Analyst<br>
+          Vulnerability Research · Windows Server Admin · Purple Teamer in Training
+        </div>
+        <div class="header-tags">
+          <span class="tag red">🔴 Red Team</span>
+          <span class="tag blue">🔵 Blue Team</span>
+          <span class="tag purple">🟣 Purple Path</span>
+          <span class="tag green">CEH · MCSA</span>
+          <span class="tag green">Wazuh · n8n</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── WHOAMI ── -->
+  <div class="section">
+    <div class="section-label">// whoami</div>
+    <div class="terminal">
+      <div><span class="prompt">┌──(naeem㉿kali)-[~]</span></div>
+      <div><span class="prompt">└─$ </span><span class="cmd">cat profile.json</span></div>
+      <br>
+      <div><span class="key">  "focus"     </span> : <span class="highlight">"Purple Teaming — Red + Blue → One Team"</span></div>
+      <div><span class="key">  "certs"     </span> : <span class="val">["CEH", "MCSA", "Networking"]</span></div>
+      <div><span class="key">  "siem"      </span> : <span class="val">["Wazuh", "n8n"]</span></div>
+      <div><span class="key">  "learning"  </span> : <span class="val">["MITRE ATT&CK", "Detection Eng", "Adversary Sim"]</span></div>
+      <div><span class="key">  "next_certs"</span> : <span class="val">["eJPT", "PNPT", "OSCP"]</span></div>
+      <div><span class="key">  "mission"   </span> : <span class="highlight">"Break it. Detect it. Fix it."</span></div>
+      <br>
+      <div><span class="prompt">└─$ </span><span class="cursor"></span></div>
+    </div>
+  </div>
+
+  <!-- ── SKILLS ── -->
+  <div class="section">
+    <div class="section-label">// skill_arsenal</div>
+    <div style="margin-bottom:12px; font-size:12px; color:var(--text-dim); font-family:'Share Tech Mono',monospace;">🔴 Red Team</div>
+    <div class="skills-grid" style="margin-bottom:18px;">
+      <div class="skill-card"><div class="skill-dot dot-red"></div>Kali Linux</div>
+      <div class="skill-card"><div class="skill-dot dot-red"></div>Metasploit</div>
+      <div class="skill-card"><div class="skill-dot dot-red"></div>Ettercap</div>
+      <div class="skill-card"><div class="skill-dot dot-red"></div>Nmap / hping3</div>
+      <div class="skill-card"><div class="skill-dot dot-red"></div>Parrot OS</div>
+      <div class="skill-card"><div class="skill-dot dot-red"></div>EVE-NG</div>
+    </div>
+    <div style="margin-bottom:12px; font-size:12px; color:var(--text-dim); font-family:'Share Tech Mono',monospace;">🔵 Blue Team</div>
+    <div class="skills-grid" style="margin-bottom:18px;">
+      <div class="skill-card"><div class="skill-dot dot-blue"></div>Wazuh SIEM</div>
+      <div class="skill-card"><div class="skill-dot dot-blue"></div>Wireshark</div>
+      <div class="skill-card"><div class="skill-dot dot-blue"></div>PEStudio</div>
+      <div class="skill-card"><div class="skill-dot dot-blue"></div>FakeNet-NG</div>
+      <div class="skill-card"><div class="skill-dot dot-blue"></div>RegShot</div>
+      <div class="skill-card"><div class="skill-dot dot-blue"></div>ProcDOT</div>
+      <div class="skill-card"><div class="skill-dot dot-blue"></div>VirusTotal</div>
+      <div class="skill-card"><div class="skill-dot dot-blue"></div>VirusTotal</div>
+    </div>
+    <div style="margin-bottom:12px; font-size:12px; color:var(--text-dim); font-family:'Share Tech Mono',monospace;">💻 Dev</div>
+    <div class="skills-grid">
+      <div class="skill-card"><div class="skill-dot dot-green"></div>Python</div>
+      <div class="skill-card"><div class="skill-dot dot-green"></div>Ruby</div>
+      <div class="skill-card"><div class="skill-dot dot-green"></div>Flutter</div>
+      <div class="skill-card"><div class="skill-dot dot-green"></div>Linux Shell</div>
+      <div class="skill-card"><div class="skill-dot dot-green"></div>Azure Cloud</div>
+      <div class="skill-card"><div class="skill-dot dot-green"></div>Windows AD</div>
+    </div>
+  </div>
+
+  <!-- ── PROJECTS ── -->
+  <div class="section">
+    <div class="section-label">// featured_labs</div>
+    <table class="proj-table">
+      <thead>
+        <tr>
+          <th>Lab</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="proj-icon">🕵️</span></td>
+          <td>
+            <div class="proj-name"><a href="https://github.com/NaeemAkmal/Advanced-MitM-ARP-Poisoning-DHCP-Spoofing" style="color:var(--blue);text-decoration:none;">Advanced-MitM-ARP-Poisoning</a></div>
+            <div class="proj-desc">ARP Poisoning & DHCP Spoofing with Ettercap + Wireshark verification</div>
+            <div class="proj-stack"><span class="proj-tag">Ettercap</span><span class="proj-tag">Wireshark</span><span class="proj-tag">Kali</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="proj-icon">🦠</span></td>
+          <td>
+            <div class="proj-name"><a href="https://github.com/NaeemAkmal/Malware-Analysis-Wazuh-SIEM-Lab" style="color:var(--blue);text-decoration:none;">Malware-Analysis-Wazuh-SIEM-Lab</a></div>
+            <div class="proj-desc">Win32/Simda + Win32/Renos analysis with Wazuh + VirusTotal real-time detection</div>
+            <div class="proj-stack"><span class="proj-tag">Wazuh</span><span class="proj-tag">VirusTotal</span><span class="proj-tag">PEStudio</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="proj-icon">🖼️</span></td>
+          <td>
+            <div class="proj-name"><a href="https://github.com/NaeemAkmal/Steganography-HiddenData-Toolkit" style="color:var(--blue);text-decoration:none;">Steganography-HiddenData-Toolkit</a></div>
+            <div class="proj-desc">10+ tool stego toolkit: image, audio, metadata & steganalysis</div>
+            <div class="proj-stack"><span class="proj-tag">Steghide</span><span class="proj-tag">Linux</span><span class="proj-tag">CTF</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="proj-icon">☁️</span></td>
+          <td>
+            <div class="proj-name"><a href="https://github.com/NaeemAkmal/Azure-Metadata-Enumerator-MSF" style="color:var(--blue);text-decoration:none;">Azure-Metadata-Enumerator-MSF</a></div>
+            <div class="proj-desc">Custom Metasploit module for Azure IMDS cloud enumeration</div>
+            <div class="proj-stack"><span class="proj-tag">Ruby</span><span class="proj-tag">Metasploit</span><span class="proj-tag">Azure</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="proj-icon">🌐</span></td>
+          <td>
+            <div class="proj-name"><a href="https://github.com/NaeemAkmal/Network-Security-SNMP-Exploitation" style="color:var(--blue);text-decoration:none;">Network-Security-SNMP-Exploitation</a></div>
+            <div class="proj-desc">SNMP enumeration & config hijacking on Cisco IOS via EVE-NG</div>
+            <div class="proj-stack"><span class="proj-tag">Cisco</span><span class="proj-tag">EVE-NG</span><span class="proj-tag">Kali</span></div>
+          </td>
+        </tr>
+        <tr>
+          <td><span class="proj-icon">🤖</span></td>
+          <td>
+            <div class="proj-name"><a href="https://github.com/NaeemAkmal/AI-Powered-Network-Anomaly-Detection" style="color:var(--blue);text-decoration:none;">AI-Powered-Network-Anomaly-Detection</a></div>
+            <div class="proj-desc">K-Means clustering on Wireshark PCAP for traffic anomaly detection</div>
+            <div class="proj-stack"><span class="proj-tag">Python</span><span class="proj-tag">ML</span><span class="proj-tag">Wireshark</span></div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══════════════════════════════
+       CYBER HACKING GAME
+  ══════════════════════════════ -->
+  <div class="section">
+    <div class="section-label">// cyber_terminal_game — hack the network</div>
+    <div class="game-wrap">
+      <div class="game-titlebar">
+        <div class="game-dots">
+          <div class="game-dot" style="background:#ff5f57"></div>
+          <div class="game-dot" style="background:#ffbd2e"></div>
+          <div class="game-dot" style="background:#28ca41"></div>
+        </div>
+        <span>NETPWN v2.4 — Penetration Simulator</span>
+        <span id="game-timer" style="color:var(--green);">TIME: 03:00</span>
+      </div>
+
+      <div class="game-screen">
+        <!-- Main area -->
+        <div class="game-main">
+          <div style="font-size:11px;color:var(--text-dim);margin-bottom:8px;">
+            TARGET NETWORK — Click a node to select, then use actions
+          </div>
+
+          <!-- SVG Network Map -->
+          <div class="net-map">
+            <svg id="net-svg" viewBox="0 0 520 220" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <filter id="glow">
+                  <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                  <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+                </filter>
+              </defs>
+
+              <!-- Connection lines -->
+              <g id="net-lines">
+                <!-- attacker → router -->
+                <line x1="50" y1="110" x2="170" y2="80" stroke="#1a2e1a" stroke-width="1" stroke-dasharray="4,3"/>
+                <!-- router → firewall -->
+                <line x1="190" y1="80" x2="270" y2="80" stroke="#1a2e1a" stroke-width="1" stroke-dasharray="4,3"/>
+                <!-- firewall → server1 -->
+                <line x1="290" y1="70" x2="380" y2="40" stroke="#1a2e1a" stroke-width="1" stroke-dasharray="4,3"/>
+                <!-- firewall → server2 -->
+                <line x1="290" y1="85" x2="380" y2="110" stroke="#1a2e1a" stroke-width="1" stroke-dasharray="4,3"/>
+                <!-- firewall → db -->
+                <line x1="290" y1="90" x2="380" y2="170" stroke="#1a2e1a" stroke-width="1" stroke-dasharray="4,3"/>
+                <!-- server1 → dc -->
+                <line x1="400" y1="40" x2="470" y2="80" stroke="#1a2e1a" stroke-width="1" stroke-dasharray="4,3"/>
+                <!-- server2 → dc -->
+                <line x1="400" y1="110" x2="470" y2="80" stroke="#1a2e1a" stroke-width="1" stroke-dasharray="4,3"/>
+              </g>
+
+              <!-- ATTACKER node (player) — always green -->
+              <g id="node-attacker" class="node-circle" onclick="selectNode('attacker')">
+                <circle cx="50" cy="110" r="18" fill="#001a0a" stroke="#00ff88" stroke-width="1.5"/>
+                <text x="50" y="114" text-anchor="middle" font-family="Share Tech Mono" font-size="10" fill="#00ff88">YOU</text>
+                <text class="node-label" x="50" y="136" text-anchor="middle">Kali Linux</text>
+              </g>
+
+              <!-- ROUTER -->
+              <g id="node-router" class="node-circle" onclick="selectNode('router')">
+                <rect x="162" y="62" width="36" height="36" rx="4" fill="#0a0e0a" stroke="#444" stroke-width="1"/>
+                <text x="180" y="83" text-anchor="middle" font-family="Share Tech Mono" font-size="8" fill="#6e7681">RTR</text>
+                <text class="node-label" x="180" y="110" text-anchor="middle">Gateway</text>
+                <text class="node-sublabel" x="180" y="120" text-anchor="middle">192.168.1.1</text>
+              </g>
+
+              <!-- FIREWALL -->
+              <g id="node-firewall" class="node-circle" onclick="selectNode('firewall')">
+                <polygon points="280,65 295,80 280,95 265,80" fill="#0a0e0a" stroke="#444" stroke-width="1"/>
+                <text x="280" y="84" text-anchor="middle" font-family="Share Tech Mono" font-size="7" fill="#6e7681">FW</text>
+                <text class="node-label" x="280" y="108" text-anchor="middle">Firewall</text>
+                <text class="node-sublabel" x="280" y="118" text-anchor="middle">10.0.0.1</text>
+              </g>
+
+              <!-- SERVER 1 (Web) -->
+              <g id="node-web" class="node-circle" onclick="selectNode('web')">
+                <rect x="370" y="22" width="40" height="36" rx="2" fill="#0a0e0a" stroke="#444" stroke-width="1"/>
+                <text x="390" y="43" text-anchor="middle" font-family="Share Tech Mono" font-size="8" fill="#6e7681">WEB</text>
+                <text class="node-label" x="390" y="68" text-anchor="middle">Web Server</text>
+                <text class="node-sublabel" x="390" y="78" text-anchor="middle">10.0.1.10</text>
+              </g>
+
+              <!-- SERVER 2 (Win) -->
+              <g id="node-win" class="node-circle" onclick="selectNode('win')">
+                <rect x="370" y="92" width="40" height="36" rx="2" fill="#0a0e0a" stroke="#444" stroke-width="1"/>
+                <text x="390" y="113" text-anchor="middle" font-family="Share Tech Mono" font-size="8" fill="#6e7681">WIN</text>
+                <text class="node-label" x="390" y="138" text-anchor="middle">Win Server</text>
+                <text class="node-sublabel" x="390" y="148" text-anchor="middle">10.0.1.20</text>
+              </g>
+
+              <!-- DATABASE -->
+              <g id="node-db" class="node-circle" onclick="selectNode('db')">
+                <ellipse cx="390" cy="172" rx="22" ry="14" fill="#0a0e0a" stroke="#444" stroke-width="1"/>
+                <ellipse cx="390" cy="164" rx="22" ry="10" fill="#0a0e0a" stroke="#444" stroke-width="1"/>
+                <text x="390" y="168" text-anchor="middle" font-family="Share Tech Mono" font-size="7" fill="#6e7681">DB</text>
+                <text class="node-label" x="390" y="196" text-anchor="middle">Database</text>
+                <text class="node-sublabel" x="390" y="206" text-anchor="middle">10.0.1.30</text>
+              </g>
+
+              <!-- DOMAIN CONTROLLER -->
+              <g id="node-dc" class="node-circle" onclick="selectNode('dc')">
+                <circle cx="475" cy="80" r="20" fill="#0a0e0a" stroke="#444" stroke-width="1"/>
+                <text x="475" y="84" text-anchor="middle" font-family="Share Tech Mono" font-size="8" fill="#6e7681">DC</text>
+                <text class="node-label" x="475" y="110" text-anchor="middle">Domain Ctrl</text>
+                <text class="node-sublabel" x="475" y="120" text-anchor="middle">10.0.0.5</text>
+              </g>
+
+              <!-- Selected indicator -->
+              <circle id="select-ring" cx="0" cy="0" r="0" fill="none" stroke="#00ff88" stroke-width="2" stroke-dasharray="4,3" opacity="0">
+                <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="3s" repeatCount="indefinite"/>
+              </circle>
+            </svg>
+          </div>
+
+          <!-- Log -->
+          <div class="game-log" id="game-log">
+            <div class="log-line green">[SYSTEM] NetPwn v2.4 initialized. Target: CORP-NET</div>
+            <div class="log-line">[INFO] You are Naeem's Red Team agent. Breach the Domain Controller.</div>
+            <div class="log-line blue">[HINT] Click a node on the map → then use action buttons below.</div>
+          </div>
+
+          <!-- Action buttons -->
+          <div class="game-actions" id="game-actions">
+            <button class="game-btn" onclick="doAction('scan')" id="btn-scan">🔍 SCAN</button>
+            <button class="game-btn" onclick="doAction('exploit')" id="btn-exploit" disabled>⚡ EXPLOIT</button>
+            <button class="game-btn" onclick="doAction('pivot')" id="btn-pivot" disabled>↪ PIVOT</button>
+            <button class="game-btn danger" onclick="doAction('arp')" id="btn-arp">🕵️ ARP POISON</button>
+          </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="game-sidebar">
+          <div style="color:var(--green-dim);letter-spacing:1px;font-size:10px;margin-bottom:10px;">── STATS ──</div>
+
+          <div class="stat-row"><span class="stat-key">PHASE</span><span class="stat-val" id="st-phase">RECON</span></div>
+          <div class="stat-row"><span class="stat-key">TARGET</span><span class="stat-val blue" id="st-target">NONE</span></div>
+          <div class="stat-row"><span class="stat-key">NODES PWNED</span><span class="stat-val" id="st-pwned">0 / 5</span></div>
+          <div class="stat-row"><span class="stat-key">STEALTH</span><span class="stat-val" id="st-stealth">100%</span></div>
+          <div class="stat-row"><span class="stat-key">SCORE</span><span class="stat-val" id="st-score">0</span></div>
+
+          <div style="margin-top:12px;font-size:10px;color:var(--text-dim);">STEALTH</div>
+          <div class="progress-bar"><div class="progress-fill fill-green" id="stealth-bar" style="width:100%"></div></div>
+
+          <div style="font-size:10px;color:var(--text-dim);">PROGRESS</div>
+          <div class="progress-bar"><div class="progress-fill fill-blue" id="progress-bar" style="width:0%"></div></div>
+
+          <!-- Mini terminal output -->
+          <div style="color:var(--green-dim);letter-spacing:1px;font-size:10px;margin-top:10px;margin-bottom:6px;">── TERMINAL ──</div>
+          <div class="mini-term" id="mini-term">
+            <span style="color:var(--green-dim);">root@kali:~# </span>_
+          </div>
+
+          <div style="margin-top:12px;">
+            <button class="game-btn" style="width:100%;margin-top:6px;" onclick="resetGame()">⟳ RESET</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="game-status-bar">
+        <span id="status-left">SELECT A NODE TO BEGIN</span>
+        <span id="status-right" style="color:var(--green);">OBJECTIVE: COMPROMISE DOMAIN CONTROLLER</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ROADMAP ── -->
+  <div class="section">
+    <div class="section-label">// career_roadmap</div>
+    <div class="roadmap">
+      <div class="roadmap-item">
+        <div class="roadmap-icon">✅</div>
+        <div>
+          <div class="roadmap-label">COMPLETED</div>
+          <div class="roadmap-val done">CEH · MCSA · Networking · Wazuh SIEM · Malware Analysis Labs</div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-icon">🔄</div>
+        <div>
+          <div class="roadmap-label">IN PROGRESS</div>
+          <div class="roadmap-val active">MITRE ATT&CK · Detection Engineering · Blue Team Hardening</div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-icon">🎯</div>
+        <div>
+          <div class="roadmap-label">NEXT UP</div>
+          <div class="roadmap-val future">eJPT → PNPT → OSCP</div>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <div class="roadmap-icon">🟣</div>
+        <div>
+          <div class="roadmap-label">END GOAL</div>
+          <div class="roadmap-val future">Purple Team · Adversary Simulation · VECTR · Caldera · CRTO</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CONNECT ── -->
+  <div class="section">
+    <div class="section-label">// connect</div>
+    <div class="connect-links">
+      <a class="connect-btn" href="https://linkedin.com/in/naeemakmal15" target="_blank">
+        <span class="connect-icon">💼</span> linkedin.com/in/naeemakmal15
+      </a>
+      <a class="connect-btn" href="https://github.com/NaeemAkmal" target="_blank">
+        <span class="connect-icon">🐙</span> github.com/NaeemAkmal
+      </a>
+      <a class="connect-btn" href="mailto:naeemakmaltts15@gmail.com">
+        <span class="connect-icon">📧</span> naeemakmaltts15@gmail.com
+      </a>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <div class="footer">
+    <div class="footer-line">// stay curious. stay dangerous. 🟣</div>
+    <div>Hafiz Naeem Akmal · Purple Teamer in Training · Lahore, PK</div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════════
+     SCRIPTS
+════════════════════════════════════════ -->
+<script>
+/* ── MATRIX RAIN ── */
+(function(){
+  const canvas = document.getElementById('matrix-canvas');
+  const ctx = canvas.getContext('2d');
+  function resize(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resize(); window.addEventListener('resize', resize);
+  const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const cols = Math.floor(window.innerWidth / 18);
+  const drops = Array(cols).fill(1);
+  function draw(){
+    ctx.fillStyle = 'rgba(10,14,10,0.05)';
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle = '#00ff88';
+    ctx.font = '14px Share Tech Mono';
+    for(let i=0;i<drops.length;i++){
+      const c = chars[Math.floor(Math.random()*chars.length)];
+      ctx.globalAlpha = Math.random() * 0.7 + 0.2;
+      ctx.fillText(c, i*18, drops[i]*18);
+      if(drops[i]*18 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+      drops[i]++;
+    }
+    ctx.globalAlpha = 1;
+  }
+  setInterval(draw, 50);
+})();
+
+/* ── GAME ENGINE ── */
+const nodes = {
+  attacker: { x:50,  y:110, shape:'circle', r:18,   label:'YOU',        pwned:true,  scanned:true,  color:'#00ff88' },
+  router:   { x:180, y:80,  shape:'rect',   w:36,h:36, label:'Gateway',  pwned:false, scanned:false, color:'#444' },
+  firewall: { x:280, y:80,  shape:'diamond',           label:'Firewall',  pwned:false, scanned:false, color:'#444' },
+  web:      { x:390, y:40,  shape:'rect',   w:40,h:36, label:'Web',       pwned:false, scanned:false, color:'#444' },
+  win:      { x:390, y:110, shape:'rect',   w:40,h:36, label:'Win',       pwned:false, scanned:false, color:'#444' },
+  db:       { x:390, y:172, shape:'ellipse',            label:'DB',        pwned:false, scanned:false, color:'#444' },
+  dc:       { x:475, y:80,  shape:'circle', r:20,     label:'DC',        pwned:false, scanned:false, color:'#444' }
+};
+
+const reachable = {
+  attacker: ['router'],
+  router:   ['firewall', 'attacker'],
+  firewall: ['web','win','db','router'],
+  web:      ['dc','firewall'],
+  win:      ['dc','firewall'],
+  db:       ['firewall'],
+  dc:       ['win','web']
+};
+
+let state = {
+  selected: null,
+  phase: 'RECON',
+  stealth: 100,
+  score: 0,
+  pwned: ['attacker'],
+  scanned: ['attacker'],
+  arpActive: false,
+  gameOver: false,
+  timeLeft: 180,
+  timerInt: null
+};
+
+function log(msg, cls=''){
+  const el = document.getElementById('game-log');
+  const line = document.createElement('div');
+  line.className = 'log-line ' + cls;
+  line.textContent = msg;
+  el.appendChild(line);
+  el.scrollTop = el.scrollHeight;
+}
+
+function setMiniTerm(lines){
+  const el = document.getElementById('mini-term');
+  el.innerHTML = lines.map(l => `<div>${l}</div>`).join('');
+}
+
+function selectNode(id){
+  if(state.gameOver) return;
+  state.selected = id;
+  const n = nodes[id];
+  document.getElementById('st-target').textContent = n.label.toUpperCase();
+
+  // Move select ring
+  const ring = document.getElementById('select-ring');
+  ring.setAttribute('cx', n.x); ring.setAttribute('cy', n.y);
+  ring.setAttribute('r', (n.r||24)+8); ring.setAttribute('opacity','1');
+
+  // Enable/disable buttons
+  const isReachable = reachable[state.pwned[state.pwned.length-1]]?.includes(id) || state.pwned.includes(id);
+  const isPwned = state.pwned.includes(id);
+  const isScanned = state.scanned.includes(id);
+
+  document.getElementById('btn-scan').disabled = isScanned;
+  document.getElementById('btn-exploit').disabled = !isScanned || isPwned || id==='attacker';
+  document.getElementById('btn-pivot').disabled = !isPwned || id==='attacker';
+
+  log(`[SELECT] Target: ${n.label} (${id}) — ${isPwned?'OWNED':'NOT OWNED'}, ${isScanned?'SCANNED':'UNSCANNED'}`, 'blue');
+  setMiniTerm([
+    `<span style="color:var(--green-dim)">root@kali:~# </span><span style="color:var(--text)">ping ${id}.corp</span>`,
+    isPwned
+      ? `<span style="color:var(--green)">PING OK — you own this box</span>`
+      : `<span style="color:var(--text-dim)">Reply from ${id}: status=${isScanned?'SCANNED':'UNKNOWN'}</span>`
+  ]);
+}
+
+function doAction(action){
+  if(state.gameOver || !state.selected) return;
+  const id = state.selected;
+  const n = nodes[id];
+  const isPwned = state.pwned.includes(id);
+  const isScanned = state.scanned.includes(id);
+
+  if(action==='scan'){
+    if(isScanned){ log('[WARN] Already scanned!','yellow'); return; }
+    state.scanned.push(id);
+    nodes[id].scanned = true;
+    stealthHit(5);
+    state.score += 10;
+    log(`[NMAP] Scanning ${n.label}... ports 22,80,443,445 OPEN`, 'green');
+    setTimeout(()=>{
+      log(`[NMAP] OS detected: ${id==='router'?'Cisco IOS':id==='dc'?'Windows Server 2019':id==='db'?'MySQL 8.0':'Linux/Windows'}`, 'green');
+      highlightNode(id, '#ffcc00');
+      document.getElementById('btn-exploit').disabled = false;
+    }, 800);
+    setMiniTerm([
+      `<span style="color:var(--green-dim)">root@kali:~# </span>nmap -sV -O ${id}.corp`,
+      `<span style="color:var(--green)">Starting Nmap 7.94...</span>`,
+      `<span style="color:var(--text)">22/tcp open  ssh</span>`,
+      `<span style="color:var(--text)">80/tcp open  http</span>`,
+    ]);
+  }
+
+  else if(action==='exploit'){
+    if(isPwned){ log('[WARN] Already owned!','yellow'); return; }
+    if(!isScanned){ log('[ERROR] Scan first!','red'); return; }
+
+    const canReach = reachable[state.pwned[state.pwned.length-1]]?.includes(id) || state.pwned.some(p => reachable[p]?.includes(id));
+    if(!canReach){ log('[ERROR] Cannot reach target from current position. PIVOT first!','red'); return; }
+
+    const success = Math.random() > (id==='dc'?0.35: id==='firewall'?0.25: 0.15);
+    stealthHit(15);
+
+    const exploits = {
+      router:   'CVE-2023-20198 Cisco IOS XE Auth Bypass',
+      firewall: 'CVE-2023-27350 PaperCut RCE',
+      web:      'CVE-2021-44228 Log4Shell RCE',
+      win:      'CVE-2017-0144 EternalBlue / MS17-010',
+      db:       'CVE-2023-34362 MOVEit SQL Injection',
+      dc:       'CVE-2020-1472 ZeroLogon'
+    };
+    const exploit = exploits[id] || 'Generic Buffer Overflow';
+
+    log(`[MSF] Launching: ${exploit}`, 'yellow');
+    setTimeout(()=>{
+      if(success){
+        state.pwned.push(id);
+        nodes[id].pwned = true;
+        state.score += (id==='dc'?500:100);
+        log(`[PWN] ✓ SHELL OBTAINED on ${n.label}!`, 'green');
+        log(`[MSF] meterpreter > hashdump`, 'green');
+        highlightNode(id, '#00ff88');
+        addPwnedTag(id);
+        updateStats();
+        if(id==='dc'){
+          setTimeout(()=>{ winGame(); }, 600);
+        }
+      } else {
+        log(`[MSF] ✗ Exploit failed — target patched or AV caught it`, 'red');
+        stealthHit(20);
+      }
+    }, 1200);
+    setMiniTerm([
+      `<span style="color:var(--green-dim)">msf6 exploit > </span>run`,
+      `<span style="color:var(--yellow)">[*] Started handler</span>`,
+      `<span style="color:var(--text)">Sending payload...</span>`,
+    ]);
+  }
+
+  else if(action==='pivot'){
+    if(!isPwned){ log('[ERROR] Must own node to pivot from it','red'); return; }
+    state.pwned[state.pwned.length-1] = id;
+    log(`[PIVOT] Now routing traffic through ${n.label}`, 'blue');
+    log(`[PIVOT] New reachable: ${(reachable[id]||[]).join(', ')}`, 'blue');
+    setMiniTerm([
+      `<span style="color:var(--green-dim)">meterpreter > </span>run post/multi/manage/shell_to_meterpreter`,
+      `<span style="color:var(--green)">Pivoting via ${n.label}...</span>`,
+      `<span style="color:var(--text)">Route added: ${id}.corp/24</span>`,
+    ]);
+  }
+
+  else if(action==='arp'){
+    state.arpActive = !state.arpActive;
+    const btn = document.getElementById('btn-arp');
+    if(state.arpActive){
+      btn.classList.add('active');
+      btn.textContent = '🕵️ ARP ACTIVE ✓';
+      stealthHit(10);
+      log('[ARP] Ettercap ARP poisoning active — intercepting traffic!','yellow');
+      log('[ARP] Gateway MAC spoofed. MitM established.','yellow');
+      log('[SNIFF] Credentials captured: admin:P@ssw0rd123','green');
+      state.score += 50;
+    } else {
+      btn.classList.remove('active');
+      btn.textContent = '🕵️ ARP POISON';
+      log('[ARP] ARP poisoning stopped.','blue');
+    }
+  }
+  updateStats();
+}
+
+function highlightNode(id, color){
+  const svgEl = document.getElementById(`node-${id}`);
+  if(!svgEl) return;
+  const shapes = svgEl.querySelectorAll('circle,rect,ellipse,polygon');
+  shapes.forEach(s=>{ if(!s.classList.contains('avatar')) s.setAttribute('stroke', color); });
+}
+
+function addPwnedTag(id){
+  const n = nodes[id];
+  const svg = document.getElementById('net-svg');
+  const tag = document.createElementNS('http://www.w3.org/2000/svg','text');
+  tag.setAttribute('x', n.x);
+  tag.setAttribute('y', n.y - (n.r||20) - 8);
+  tag.setAttribute('text-anchor','middle');
+  tag.setAttribute('class','pwned-tag');
+  tag.textContent = '[PWNED]';
+  svg.appendChild(tag);
+}
+
+function stealthHit(amount){
+  state.stealth = Math.max(0, state.stealth - amount);
+  if(state.stealth <= 0 && !state.gameOver){ loseGame('IDS detected you! Connection terminated.'); }
+}
+
+function updateStats(){
+  document.getElementById('st-phase').textContent = state.phase;
+  document.getElementById('st-pwned').textContent = `${state.pwned.length-1} / 5`;
+  document.getElementById('st-stealth').textContent = state.stealth + '%';
+  document.getElementById('st-score').textContent = state.score;
+  document.getElementById('stealth-bar').style.width = state.stealth + '%';
+  document.getElementById('stealth-bar').className = 'progress-fill ' + (state.stealth>50?'fill-green':state.stealth>25?'fill-blue':'fill-red');
+  document.getElementById('progress-bar').style.width = ((state.pwned.length-1)/5*100) + '%';
+
+  if(state.pwned.length>2) state.phase='EXPLOITATION';
+  if(state.pwned.length>4) state.phase='POST-EXPLOIT';
+  document.getElementById('st-phase').textContent = state.phase;
+}
+
+function winGame(){
+  state.gameOver = true;
+  clearInterval(state.timerInt);
+  log('','');
+  log('██████████████████████████████████', 'green');
+  log('  🏆 DOMAIN COMPROMISED — YOU WIN!', 'green');
+  log('  Score: ' + state.score + '  Stealth: ' + state.stealth + '%', 'green');
+  log('  "Naeem would be proud." 🟣', 'green');
+  log('██████████████████████████████████', 'green');
+  document.getElementById('status-right').textContent = '🏆 MISSION COMPLETE!';
+  document.getElementById('status-right').style.color = 'var(--green)';
+}
+
+function loseGame(reason){
+  state.gameOver = true;
+  clearInterval(state.timerInt);
+  log('[!] GAME OVER: ' + reason, 'red');
+  log('[!] Blue team traced your IP. Disconnect!', 'red');
+  document.getElementById('status-right').textContent = '❌ DETECTED — GAME OVER';
+  document.getElementById('status-right').style.color = 'var(--red)';
+  ['btn-scan','btn-exploit','btn-pivot','btn-arp'].forEach(b=>{
+    document.getElementById(b).disabled = true;
+  });
+}
+
+function resetGame(){
+  clearInterval(state.timerInt);
+  state = { selected:null, phase:'RECON', stealth:100, score:0, pwned:['attacker'], scanned:['attacker'], arpActive:false, gameOver:false, timeLeft:180, timerInt:null };
+  Object.keys(nodes).forEach(id=>{ nodes[id].pwned=(id==='attacker'); nodes[id].scanned=(id==='attacker'); });
+  document.getElementById('game-log').innerHTML = `
+    <div class="log-line green">[SYSTEM] NetPwn v2.4 re-initialized.</div>
+    <div class="log-line blue">[HINT] Click a node → then use action buttons.</div>
+  `;
+  document.getElementById('mini-term').innerHTML = `<span style="color:var(--green-dim)">root@kali:~# </span>_`;
+  document.getElementById('btn-arp').textContent = '🕵️ ARP POISON';
+  document.getElementById('btn-arp').classList.remove('active');
+  document.getElementById('select-ring').setAttribute('opacity','0');
+  document.getElementById('st-target').textContent = 'NONE';
+  document.getElementById('status-right').textContent = 'OBJECTIVE: COMPROMISE DOMAIN CONTROLLER';
+  document.getElementById('status-right').style.color = 'var(--green)';
+  // Remove pwned tags
+  document.querySelectorAll('.pwned-tag').forEach(t=>t.remove());
+  // Reset node strokes
+  document.querySelectorAll('#net-svg circle, #net-svg rect, #net-svg ellipse, #net-svg polygon').forEach(s=>{
+    if(s.id!=='select-ring') s.setAttribute('stroke', '#444');
+  });
+  document.getElementById('node-attacker').querySelector('circle').setAttribute('stroke','#00ff88');
+  updateStats();
+  startTimer();
+}
+
+function startTimer(){
+  state.timeLeft = 180;
+  state.timerInt = setInterval(()=>{
+    state.timeLeft--;
+    const m = Math.floor(state.timeLeft/60).toString().padStart(2,'0');
+    const s = (state.timeLeft%60).toString().padStart(2,'0');
+    document.getElementById('game-timer').textContent = `TIME: ${m}:${s}`;
+    if(state.timeLeft<=0){ loseGame('Time expired — Blue Team locked the network!'); }
+    if(state.timeLeft<=30){ document.getElementById('game-timer').style.color='var(--red)'; }
+  }, 1000);
+}
+
+// Init
+updateStats();
+startTimer();
+</script>
+</body>
+</html>
